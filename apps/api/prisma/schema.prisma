@@ -30,8 +30,8 @@ model User {
   UpdateDate      DateTime     @updatedAt
   Status          UserStatus
   ReferralCode    String       @unique
-  SumPointAmount  Int
-  CountOfTransId  Int
+  SumPointAmount  Int?
+  CountOfTransId  Int?
 }
 
 model Referral {
