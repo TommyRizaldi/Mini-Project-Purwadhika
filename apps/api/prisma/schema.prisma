@@ -19,3 +19,106 @@ model Sample {
 
   @@map("samples") // if you want to use snake_case format
 }
+
+model User {
+  UserId          String       @id @default(uuid()) 
+  Username        String       @unique
+  Name            String
+  Email           String       @unique
+  Password        String
+  CreateDate      DateTime     @default(now())
+  UpdateDate      DateTime     @updatedAt
+  Status          UserStatus
+  ReferralCode    String       @unique
+  SumPointAmount  Int
+  CountOfTransId  Int
+}
+
+model Referral {
+  ReferralId      String   @id @default(cuid())
+  ReferralCode    String
+  UserId          String
+  CountUsed       Int
+  CreateDate      DateTime
+  ExpireDate      DateTime
+  Status          ReferralStatus
+}
+
+model ReferralUsed {
+  ReferralUsedId  String   @id @default(cuid())
+  ReferralCode    String
+  UsedDate        DateTime
+  UsedBy          String
+}
+
+model PointsTrx {
+  PointsId        String   @id @default(cuid())
+  UserId          String
+  ReferralCode    String?
+  AddedDate       DateTime
+  AddedBy         String
+  ExpireDate      DateTime
+  PointAmount     Int
+}
+
+model Testimoni {
+  TestimoniId     String   @id @default(cuid())
+  Experience      Experience
+  Quality         Quality
+  Improvement     String
+  Ratings         Rating
+  CreateDate      DateTime
+  UserId          String
+}
+
+model Transaction {
+  TransId         String   @id @default(cuid())
+  UserId          String
+  EventId         String
+  SumTicket       Int
+  ReferralCode    String?
+  PointsAmount    Int
+  TotalAmount     Int
+  CreateDate      DateTime
+  ExpireDate      DateTime
+}
+
+enum EventCategory {
+  CONCERT
+  CONFERENCE
+  WORKSHOP
+  EXHIBITION
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  BANNED
+}
+
+enum ReferralStatus {
+  ACTIVE
+  EXPIRED
+  USED
+}
+
+enum Experience {
+  EXCELLENT
+  GOOD
+  AVERAGE
+  POOR
+}
+
+enum Quality {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum Rating {
+  FIVE_STAR
+  FOUR_STAR
+  THREE_STAR
+  TWO_STAR
+  ONE_STAR
+}
