@@ -11,11 +11,11 @@ export class UserController {
     async createUser(req: Request, res: Response) {
         const { username, name, email, password, referralCode } = req.body;
     
-        // Input validation
+        // Input validation (make referralCode optional)
         if (!username || !name || !email || !password) {
             return res.status(400).send({
                 status: 'error',
-                msg: 'All fields are required'
+                msg: 'All fields except referralCode are required'
             });
         }
     
@@ -109,9 +109,9 @@ export class UserController {
                         CountUsed: { increment: 1 }
                     }
                 });
-
-                 // Update SumPointAmount for the referrer
-                 const totalPoints = await prisma.pointsTrx.aggregate({
+    
+                // Update SumPointAmount for the referrer
+                const totalPoints = await prisma.pointsTrx.aggregate({
                     _sum: {
                         PointAmount: true
                     },
@@ -119,7 +119,7 @@ export class UserController {
                         UserId: referrerId
                     }
                 });
-
+    
                 await prisma.user.update({
                     where: { UserId: referrerId },
                     data: {
@@ -137,7 +137,7 @@ export class UserController {
             msg: 'User created successfully!',
             user: transaction
         });
-        
+    
         // Catch errors
         try {
             await transaction;
@@ -149,6 +149,7 @@ export class UserController {
             });
         }
     }
+    
     
 
     async loginUser(req: Request, res: Response) {

@@ -12,7 +12,9 @@
       "@/*": ["./src/*"]
     }
   },
-  // "include": ["src/**/*"],
-  "include": ["**/*.ts"],
+  "include": [
+    "src/**/*",
+    "src/types/**/*"  // Make sure this line is present
+  ],
   "exclude": ["node_modules"]
 }
