@@ -21,104 +21,64 @@ model Sample {
 }
 
 model User {
-  UserId          String       @id @default(uuid()) 
-  Username        String       @unique
-  Name            String
-  Email           String       @unique
-  Password        String
-  CreateDate      DateTime     @default(now())
-  UpdateDate      DateTime     @updatedAt
-  Status          UserStatus
-  ReferralCode    String       @unique
-  SumPointAmount  Int?
-  CountOfTransId  Int?
+  UserId           String   @id @default(cuid())
+  Username         String
+  Name             String
+  Email            String   @unique
+  Password         String
+  Type             UserType
+  Status           UserStatus
+  ReferralCode     String?
+  SumPointAmount   Int      @default(0)
+  CountOfTransId   Int      @default(0)
+
+  referrals        Referral[]
+  pointsTrx        PointsTrx[]
+
+  ReferralUsed ReferralUsed[]
+}
+
+enum UserType {
+  Customer
+  Organizer
+}
+
+enum UserStatus {
+  Active
+  Inactive
 }
 
 model Referral {
   ReferralId      String   @id @default(cuid())
   ReferralCode    String
   UserId          String
-  CountUsed       Int
-  CreateDate      DateTime
-  ExpireDate      DateTime
-  Status          ReferralStatus
+  CountUsed       Int      @default(0)
+  CreateDate      DateTime @default(now())
+  Status          String
+
+  user            User     @relation(fields: [UserId], references: [UserId])
 }
 
 model ReferralUsed {
   ReferralUsedId  String   @id @default(cuid())
   ReferralCode    String
-  UsedDate        DateTime
-  UsedBy          String
+  UsedDate        DateTime @default(now())
+  UsedBy          String @unique
+
+  user            User     @relation(fields: [UsedBy], references: [UserId])
+
+  PointsTrx PointsTrx[] @relation(name: "PointsTrxToReferralUsed")
 }
 
 model PointsTrx {
   PointsId        String   @id @default(cuid())
   UserId          String
   ReferralCode    String?
-  AddedDate       DateTime
-  AddedBy         String
+  AddedDate       DateTime @default(now())
+  AddedBy         String @unique
   ExpireDate      DateTime
   PointAmount     Int
-}
-
-model Testimoni {
-  TestimoniId     String   @id @default(cuid())
-  Experience      Experience
-  Quality         Quality
-  Improvement     String
-  Ratings         Rating
-  CreateDate      DateTime
-  UserId          String
-}
-
-model Transaction {
-  TransId         String   @id @default(cuid())
-  UserId          String
-  EventId         String
-  SumTicket       Int
-  ReferralCode    String?
-  PointsAmount    Int
-  TotalAmount     Int
-  CreateDate      DateTime
-  ExpireDate      DateTime
-}
-
-enum EventCategory {
-  CONCERT
-  CONFERENCE
-  WORKSHOP
-  EXHIBITION
-}
-
-enum UserStatus {
-  ACTIVE
-  INACTIVE
-  BANNED
-}
-
-enum ReferralStatus {
-  ACTIVE
-  EXPIRED
-  USED
-}
-
-enum Experience {
-  EXCELLENT
-  GOOD
-  AVERAGE
-  POOR
-}
-
-enum Quality {
-  HIGH
-  MEDIUM
-  LOW
-}
-
-enum Rating {
-  FIVE_STAR
-  FOUR_STAR
-  THREE_STAR
-  TWO_STAR
-  ONE_STAR
+  
+  user            User     @relation(fields: [UserId], references: [UserId])
+  ref ReferralUsed @relation(name: "PointsTrxToReferralUsed", fields: [AddedBy], references: [UsedBy])
 }
