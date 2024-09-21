@@ -39,36 +39,44 @@ const RegisterForm = () => {
     >
       {() => (
         <Form>
-          <div>
-            <h2>Register</h2>
+        <div className=" min-w-[30vw]">
             <div>
-              <label>Username</label>
-              <Field name="username" type="text" />
-              <ErrorMessage name="username" component="div" />
+                <label className="block text-sm font-medium leading-8 text-white">Username</label>
+                <div className="mt-2">
+                    <Field name="password" type="password" className="block w-full rounded-md border-0 p-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                    <ErrorMessage name="password" component={"div"} className="text-sm text-red-500"/>
+                </div>
             </div>
             <div>
-              <label>Name</label>
-              <Field name="name" type="text" />
-              <ErrorMessage name="name" component="div" />
+                <label className="block text-sm font-medium leading-8 text-white">Name</label>
+                <div className="mt-2">
+                    <Field name="password" type="password" className="block w-full rounded-md border-0 p-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                    <ErrorMessage name="password" component={"div"} className="text-sm text-red-500"/>
+                </div>
             </div>
             <div>
-              <label>Email</label>
-              <Field name="email" type="text" />
-              <ErrorMessage name="email" component="div" />
+                <label className="block text-sm font-medium leading-8 text-white">Email</label>
+                <div className="mt-2">
+                    <Field name="email" type="text" className="block w-full rounded-md border-0 p-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                    <ErrorMessage name="email" component={"div"} className="text-sm text-red-500"/>
+                </div>
             </div>
             <div>
-              <label>Password</label>
-              <Field name="password" type="password" />
-              <ErrorMessage name="password" component="div" />
+                <label className="block text-sm font-medium leading-8 text-white">Password</label>
+                <div className="mt-2">
+                    <Field name="password" type="password" className="block w-full rounded-md border-0 p-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                    <ErrorMessage name="password" component={"div"} className="text-sm text-red-500"/>
+                </div>
             </div>
             <div>
-              <label>Referral Code (optional)</label>
-              <Field name="referralCode" type="text" />
+                <label className="block text-sm font-medium leading-8 text-white">Referral Code</label>
+                <div className="mt-2">
+                    <Field name="password" type="password" className="block w-full rounded-md border-0 p-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                    <ErrorMessage name="password" component={"div"} className="text-sm text-red-500"/>
+                </div>
             </div>
-            <button type="submit" disabled={loading}>
-              {loading ? "Registering..." : "Register"}
-            </button>
-          </div>
+                <button type="submit" className="w-full mt-6 p-1.5 text-sm font-medium rounded-md bg-orange-500 ">Register</button>
+            </div>
         </Form>
       )}
     </Formik>
