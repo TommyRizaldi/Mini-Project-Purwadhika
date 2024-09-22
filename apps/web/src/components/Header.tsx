@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import {
   Dialog,
   DialogPanel,
@@ -11,7 +11,7 @@ import {
   PopoverButton,
   PopoverGroup,
   PopoverPanel,
-} from '@headlessui/react'
+} from '@headlessui/react';
 import {
   ArrowPathIcon,
   Bars3Icon,
@@ -20,10 +20,10 @@ import {
   FingerPrintIcon,
   SquaresPlusIcon,
   XMarkIcon,
-} from '@heroicons/react/24/outline'
-import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
-import Link from 'next/link'
-import { getToken } from '@/lib/server'
+} from '@heroicons/react/24/outline';
+import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid';
+import Link from 'next/link';
+import { getToken, deleteToken } from '@/lib/server'; // Import necessary functions
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -31,26 +31,32 @@ const products = [
   { name: 'Security', description: 'Your customers’ data will be safe and secure', href: '#', icon: FingerPrintIcon },
   { name: 'Integrations', description: 'Connect with third-party tools', href: '#', icon: SquaresPlusIcon },
   { name: 'Automations', description: 'Build strategic funnels that will convert', href: '#', icon: ArrowPathIcon },
-]
+];
 
 const callsToAction = [
   { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
   { name: 'Contact sales', href: '#', icon: PhoneIcon },
-]
+];
 
 export default function Example() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [token, setToken] = useState<string | null>(null) // Adjusted type to allow for string or null
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [token, setToken] = useState<string | null>(null); // Adjusted type to allow for string or null
 
   useEffect(() => {
     // Fetch the token on component mount
     const fetchToken = async () => {
-      const fetchedToken = await getToken()
-      setToken(fetchedToken ?? null) // Set to null if fetchedToken is undefined
-    }
+      const fetchedToken = await getToken();
+      setToken(fetchedToken ?? null); // Set to null if fetchedToken is undefined
+    };
 
-    fetchToken()
-  }, [])
+    fetchToken();
+  }, []);
+
+  const handleLogout = async () => {
+    await deleteToken(); // Call the deleteToken function
+    setToken(null); // Clear the token from local state
+    window.location.href = '/login'; // Redirect to login page
+  };
 
   return (
     <header className="bg-white">
@@ -116,27 +122,15 @@ export default function Example() {
             </PopoverPanel>
           </Popover>
 
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Features
-          </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Marketplace
-          </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Company
-          </a>
+          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">Features</a>
+          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">Marketplace</a>
+          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">Company</a>
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link href="/login">
-            {token ? 
-              <div className="text-sm font-semibold leading-6 text-gray-900">
-                Log Out
-              </div>
-            : 
-              <div className="text-sm font-semibold leading-6 text-gray-900">
-                Log in <span aria-hidden="true">&rarr;</span>
-              </div>
-            }
+          <Link href={token ? '#' : '/login'} onClick={token ? handleLogout : undefined}>
+            <div className="text-sm font-semibold leading-6 text-gray-900">
+              {token ? 'Log Out' : 'Log in'} <span aria-hidden="true">&rarr;</span>
+            </div>
           </Link>
         </div>
       </nav>
@@ -209,5 +203,5 @@ export default function Example() {
         </DialogPanel>
       </Dialog>
     </header>
-  )
+  );
 }
