@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Dialog,
   DialogPanel,
@@ -23,6 +23,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
+import { getToken } from '@/lib/server'
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -31,6 +32,7 @@ const products = [
   { name: 'Integrations', description: 'Connect with third-party tools', href: '#', icon: SquaresPlusIcon },
   { name: 'Automations', description: 'Build strategic funnels that will convert', href: '#', icon: ArrowPathIcon },
 ]
+
 const callsToAction = [
   { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
   { name: 'Contact sales', href: '#', icon: PhoneIcon },
@@ -38,6 +40,17 @@ const callsToAction = [
 
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [token, setToken] = useState<string | null>(null) // Adjusted type to allow for string or null
+
+  useEffect(() => {
+    // Fetch the token on component mount
+    const fetchToken = async () => {
+      const fetchedToken = await getToken()
+      setToken(fetchedToken ?? null) // Set to null if fetchedToken is undefined
+    }
+
+    fetchToken()
+  }, [])
 
   return (
     <header className="bg-white">
@@ -115,9 +128,15 @@ export default function Example() {
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <Link href="/login">
-          <div className="text-sm font-semibold leading-6 text-gray-900">
-            Log in <span aria-hidden="true">&rarr;</span>
-          </div>
+            {token ? 
+              <div className="text-sm font-semibold leading-6 text-gray-900">
+                Log Out
+              </div>
+            : 
+              <div className="text-sm font-semibold leading-6 text-gray-900">
+                Log in <span aria-hidden="true">&rarr;</span>
+              </div>
+            }
           </Link>
         </div>
       </nav>
@@ -183,12 +202,7 @@ export default function Example() {
                 </a>
               </div>
               <div className="py-6">
-                {/* <link
-                  href="/login"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Log in
-                </link> */}
+                {/* Your login link can go here */}
               </div>
             </div>
           </div>

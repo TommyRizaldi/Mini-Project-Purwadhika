@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 
 interface IUser {
-    id: number;
+    id: string;
     type: string;
 }
 
@@ -42,7 +42,7 @@ export const checkAdmin = async (
     next: NextFunction,
 ) => {
     try {
-        if (!req.user || req.user.type !== 'Organizer') {
+        if (req.user?.type !== 'Organizer') {
             throw new Error('You are not an Organizer');
         }
         next();

@@ -1,10 +1,10 @@
-type user = {
-    id: number,
+type User = {
+    id: string,
     type: string
 }
 
 declare namespace Express {
     export interface Request {
-        user?: user
+        user?: User
     }
 }

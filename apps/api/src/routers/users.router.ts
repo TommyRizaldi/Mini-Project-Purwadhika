@@ -17,19 +17,13 @@ export class UserRouter {
     
 
     private initializeRoutes(): void {
-        // Get all users (Admin only)
         this.router.get('/', 
-            verifyToken, checkAdmin,
+            verifyToken, //checkAdmin,
             this.userController.getUsers);
-
-        // Register a new user
-        this.router.post('/', this.userController.createUser);
-
-        // User login
+        this.router.post('/', validateRegister, this.userController.createUser);
         this.router.post('/login', this.userController.loginUser);
-
-        // Get user by ID
         this.router.get('/get-user', verifyToken, this.userController.getUserById);
+        this.router.patch('/verif', verifyToken, this.userController.VerifUser)
     }
 
     getRouter(): Router {

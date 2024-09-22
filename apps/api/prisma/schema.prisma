@@ -28,9 +28,13 @@ model User {
   Password         String
   Type             UserType
   Status           UserStatus
+  // isVerify         Boolean @default(false)
   ReferralCode     String?
   SumPointAmount   Int      @default(0)
   CountOfTransId   Int      @default(0)
+// New fields
+  createdDate      DateTime     @default(now())
+  updatedDate      DateTime     @default(now()) @updatedAt
 
   referrals        Referral[]
   pointsTrx        PointsTrx[]
@@ -75,7 +79,7 @@ model PointsTrx {
   UserId          String
   ReferralCode    String?
   AddedDate       DateTime @default(now())
-  AddedBy         String @unique
+  AddedBy         String
   ExpireDate      DateTime
   PointAmount     Int
   

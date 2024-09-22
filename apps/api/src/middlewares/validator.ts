@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 
 export const validateRegister = [
+  body('username').notEmpty().withMessage('username is required'),
   body('name').notEmpty().withMessage('Name is required'),
   body('email').isEmail().notEmpty().withMessage('Invalid email format!'),
   body('password')
@@ -9,7 +10,6 @@ export const validateRegister = [
     .notEmpty()
     .withMessage('Password is required'),
   body('referralCode').optional(),
-  body('role').isIn(['CUSTOMER', 'ORGANIZER']),
 
   (req: Request, res: Response, next: NextFunction) => {
     const error = validationResult(req);
