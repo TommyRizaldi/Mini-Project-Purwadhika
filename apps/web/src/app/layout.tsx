@@ -3,6 +3,9 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Footer } from '@/components/Footer';
 import Header from '@/components/Header';
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css"
+import StoreProvider from '@/components/StoreProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,7 +23,15 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Header />
-        {children}
+        <StoreProvider>
+          {children}
+        </StoreProvider>
+        <ToastContainer
+         position='bottom-right'
+         autoClose={5000}
+         closeOnClick
+         draggable
+         />
         <Footer />
       </body>
     </html>
